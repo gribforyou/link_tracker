@@ -2,6 +2,9 @@
 !**/src/main/**
 !**/src/test/**
 
+### TgToken
+**/token.properties
+
 ### Maven ###
 !.mvn/wrapper/maven-wrapper.jar
 target/
