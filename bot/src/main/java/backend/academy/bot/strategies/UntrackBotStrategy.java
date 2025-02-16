@@ -2,7 +2,9 @@ package backend.academy.bot.strategies;
 
 import com.pengrad.telegrambot.TelegramBot;
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
 
+@Component
 @AllArgsConstructor
 public class UntrackBotStrategy implements BotStrategy{
     private final TelegramBot bot;
@@ -16,6 +18,6 @@ public class UntrackBotStrategy implements BotStrategy{
 
     @Override
     public boolean supports(String message) {
-        return message.equals("untrack");
+        return message.equals("/untrack");
     }
 }

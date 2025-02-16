@@ -7,11 +7,12 @@ import backend.academy.bot.strategies.ListBotStrategy;
 import backend.academy.bot.strategies.StartBotStrategy;
 import backend.academy.bot.strategies.TrackBotStrategy;
 import backend.academy.bot.strategies.UntrackBotStrategy;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pengrad.telegrambot.TelegramBot;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class JavaConfiguration {
@@ -21,15 +22,21 @@ public class JavaConfiguration {
     }
 
     @Bean(name = "botStrategiesList")
-    public List<BotStrategy> botStrategiesList(TelegramBot bot) {
+    public List<BotStrategy> botStrategiesList(StartBotStrategy start, TrackBotStrategy track,
+                                               UntrackBotStrategy untrack, ListBotStrategy list,
+                                               HelpBotStrategy help, DefaultBotStrategy defaul) {
         List<BotStrategy> botStrategies = new ArrayList<>();
-        botStrategies.add(new StartBotStrategy(bot));
-        botStrategies.add(new TrackBotStrategy(bot));
-        botStrategies.add(new UntrackBotStrategy(bot));
-        botStrategies.add(new ListBotStrategy(bot));
-        botStrategies.add(new HelpBotStrategy(bot));
-        //maybe some other strategies
-        botStrategies.addLast(new DefaultBotStrategy(bot));
+        botStrategies.add(start);
+        botStrategies.add(track);
+        botStrategies.add(untrack);
+        botStrategies.add(list);
+        botStrategies.add(help);
+        botStrategies.addLast(defaul);
         return botStrategies;
+    }
+
+    @Bean
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper();
     }
 }
