@@ -21,7 +21,7 @@ public class JavaConfiguration {
         return new TelegramBot(botConfig.telegramToken());
     }
 
-    @Bean(name = "botStrategiesList")
+    @Bean("sortedStrategies")
     public List<BotStrategy> botStrategiesList(StartBotStrategy start, TrackBotStrategy track,
                                                UntrackBotStrategy untrack, ListBotStrategy list,
                                                HelpBotStrategy help, DefaultBotStrategy defaul) {
@@ -31,7 +31,7 @@ public class JavaConfiguration {
         botStrategies.add(untrack);
         botStrategies.add(list);
         botStrategies.add(help);
-        botStrategies.addLast(defaul);
+        botStrategies.add(defaul);
         return botStrategies;
     }
 
