@@ -18,9 +18,9 @@ public class StartBotStrategy extends RestBotStrategy {
 
     private static final String SUCCESS_MESSAGE =
             """
-        This chat is successfully registered!
-        Use /help to see the list of available commands!
-        """;
+            This chat is successfully registered!
+            Use /help to see the list of available commands!
+            """;
 
     public StartBotStrategy(TelegramBot bot, ObjectMapper mapper, ScrapperClient scrapperClient) {
         super(bot, mapper, scrapperClient);
@@ -40,13 +40,15 @@ public class StartBotStrategy extends RestBotStrategy {
 
         if (response.statusCode() == 200) {
             bot.execute(new SendMessage(id, SUCCESS_MESSAGE));
-            log.info(String.format("Successfully registered chat with id %d", id));
+            final String report = String.format("Successfully registered chat with id %d", id);
+            log.info(report);
         } else {
             try {
                 sendFailureMessage(id);
                 ErrorDto error = mapper.readValue(response.body(), ErrorDto.class);
-                log.error(String.format(
-                        "Failed to register chat with id %d with description %s", id, error.description()));
+                final String report = String.format(
+                        "Failed to register chat with id %d with description %s", id, error.description());
+                log.error(report);
             } catch (JsonProcessingException e) {
                 handleJsonProcessingException(id, e);
             }

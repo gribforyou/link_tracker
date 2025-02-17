@@ -50,7 +50,9 @@ public class ListBotStrategy extends RestBotStrategy {
             sendFailureMessage(id);
             try {
                 ErrorDto error = mapper.readValue(response.body(), ErrorDto.class);
-                log.error(String.format("Failed to get links by id %d with description %s", id, error.description()));
+                final String report =
+                        String.format("Failed to get links by id %d with description %s", id, error.description());
+                log.error(report);
             } catch (JsonProcessingException e) {
                 handleJsonProcessingException(id, e);
             }

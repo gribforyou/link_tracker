@@ -29,9 +29,9 @@ public class ScrapperClient {
         final String uri = String.format(baseUrl + "/tg-chat/%d", id);
 
         HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create(uri))
-            .POST(HttpRequest.BodyPublishers.noBody())
-            .build();
+                .uri(URI.create(uri))
+                .POST(HttpRequest.BodyPublishers.noBody())
+                .build();
 
         try {
             return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
@@ -43,10 +43,8 @@ public class ScrapperClient {
     public HttpResponse<String> deleteChat(long id) throws ScrapperConnectionFailedException {
         final String uri = String.format(baseUrl + "/tg-chat/%d", id);
 
-        HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create(uri))
-            .DELETE()
-            .build();
+        HttpRequest request =
+                HttpRequest.newBuilder().uri(URI.create(uri)).DELETE().build();
 
         try {
             return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
@@ -59,7 +57,7 @@ public class ScrapperClient {
         final String uri = String.format(baseUrl + "/links?Tg-Chat-Id=%d", chatId);
 
         HttpRequest request =
-            HttpRequest.newBuilder().uri(URI.create(uri)).GET().build();
+                HttpRequest.newBuilder().uri(URI.create(uri)).GET().build();
 
         try {
             return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
@@ -68,16 +66,17 @@ public class ScrapperClient {
         }
     }
 
-    public HttpResponse<String> addLink(long chatId, LinkDto linkDto) throws ScrapperConnectionFailedException, JsonProcessingException {
+    public HttpResponse<String> addLink(long chatId, LinkDto linkDto)
+            throws ScrapperConnectionFailedException, JsonProcessingException {
         final String uri = String.format(baseUrl + "/links?Tg-Chat-Id=%d", chatId);
 
         final String json = mapper.writeValueAsString(linkDto);
 
         HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create(uri))
-            .header("Content-Type", "application/json")
-            .POST(HttpRequest.BodyPublishers.ofString(json))
-            .build();
+                .uri(URI.create(uri))
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(json))
+                .build();
 
         try {
             return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
@@ -87,17 +86,17 @@ public class ScrapperClient {
     }
 
     public HttpResponse<String> removeLink(long chatId, RemoveLinkDto removeLinkDto)
-        throws ScrapperConnectionFailedException, JsonProcessingException {
+            throws ScrapperConnectionFailedException, JsonProcessingException {
 
         final String uri = String.format(baseUrl + "/links?Tg-Chat-Id=%d", chatId);
 
         final String json = mapper.writeValueAsString(removeLinkDto);
 
         HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create(uri))
-            .header("Content-Type", "application/json")
-            .method("DELETE", HttpRequest.BodyPublishers.ofString(json))
-            .build();
+                .uri(URI.create(uri))
+                .header("Content-Type", "application/json")
+                .method("DELETE", HttpRequest.BodyPublishers.ofString(json))
+                .build();
 
         try {
             return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
