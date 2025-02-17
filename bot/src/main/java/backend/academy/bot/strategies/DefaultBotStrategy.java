@@ -9,7 +9,8 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class DefaultBotStrategy implements BotStrategy {
     private final TelegramBot bot;
-    private final static String DEFAULT_MESSAGE = """
+    private static final String DEFAULT_MESSAGE =
+            """
         Bot doesn't understand your command(
         Please, use /help command for listing commands
         """;

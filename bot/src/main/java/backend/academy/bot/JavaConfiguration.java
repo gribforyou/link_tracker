@@ -22,9 +22,13 @@ public class JavaConfiguration {
     }
 
     @Bean("sortedStrategies")
-    public List<BotStrategy> botStrategiesList(StartBotStrategy start, TrackBotStrategy track,
-                                               UntrackBotStrategy untrack, ListBotStrategy list,
-                                               HelpBotStrategy help, DefaultBotStrategy defaul) {
+    public List<BotStrategy> botStrategiesList(
+            StartBotStrategy start,
+            TrackBotStrategy track,
+            UntrackBotStrategy untrack,
+            ListBotStrategy list,
+            HelpBotStrategy help,
+            DefaultBotStrategy defaul) {
         List<BotStrategy> botStrategies = new ArrayList<>();
         botStrategies.add(start);
         botStrategies.add(track);

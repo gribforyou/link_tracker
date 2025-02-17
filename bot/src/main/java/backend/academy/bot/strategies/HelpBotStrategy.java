@@ -9,8 +9,9 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class HelpBotStrategy implements BotStrategy {
     private final TelegramBot bot;
-    private final static String COMMAND = "/help";
-    private final static String HELP_MESSAGE = """
+    private static final String COMMAND = "/help";
+    private static final String HELP_MESSAGE =
+            """
         To communicate with bot use following commands:
         \t/track - for adding link to tracked
         \t/untrack - for removing link from tracked

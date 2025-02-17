@@ -15,9 +15,10 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class ListBotStrategy extends RestBotStrategy {
-    private final static String COMMAND = "/list";
+    private static final String COMMAND = "/list";
 
-    private final static String LINKS_NOT_FOUND_MESSAGE = """
+    private static final String LINKS_NOT_FOUND_MESSAGE =
+            """
         There are no tracking links.
         Use /track command to add link.
         """;
@@ -25,7 +26,6 @@ public class ListBotStrategy extends RestBotStrategy {
     public ListBotStrategy(TelegramBot bot, ObjectMapper mapper, ScrapperClient scrapperClient) {
         super(bot, mapper, scrapperClient);
     }
-
 
     @Override
     public void applyStrategy(long id) {
@@ -50,8 +50,7 @@ public class ListBotStrategy extends RestBotStrategy {
             sendFailureMessage(id);
             try {
                 ErrorDto error = mapper.readValue(response.body(), ErrorDto.class);
-                log.error(String.format("Failed to get links by id %d with description %s",
-                    id, error.description()));
+                log.error(String.format("Failed to get links by id %d with description %s", id, error.description()));
             } catch (JsonProcessingException e) {
                 handleJsonProcessingException(id, e);
             }

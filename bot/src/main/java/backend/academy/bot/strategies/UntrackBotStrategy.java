@@ -6,14 +6,14 @@ import org.springframework.stereotype.Component;
 
 @Component
 @AllArgsConstructor
-public class UntrackBotStrategy implements BotStrategy{
+public class UntrackBotStrategy implements BotStrategy {
     private final TelegramBot bot;
 
     @Override
     public void applyStrategy(long id) {
-        //todo
-        //getLink()
-        //send DELETE /links
+        // todo
+        // getLink()
+        // send DELETE /links
     }
 
     @Override

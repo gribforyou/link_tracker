@@ -1,6 +1,3 @@
 package backend.academy;
 
-public record RemoveLinkDto(
-    String link
-) {
-}
+public record RemoveLinkDto(String link) {}

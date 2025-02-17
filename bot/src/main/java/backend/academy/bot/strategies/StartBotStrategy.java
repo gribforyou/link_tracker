@@ -14,9 +14,10 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class StartBotStrategy extends RestBotStrategy {
-    private final static String COMMAND = "/start";
+    private static final String COMMAND = "/start";
 
-    private final static String SUCCESS_MESSAGE = """
+    private static final String SUCCESS_MESSAGE =
+            """
         This chat is successfully registered!
         Use /help to see the list of available commands!
         """;
@@ -24,7 +25,6 @@ public class StartBotStrategy extends RestBotStrategy {
     public StartBotStrategy(TelegramBot bot, ObjectMapper mapper, ScrapperClient scrapperClient) {
         super(bot, mapper, scrapperClient);
     }
-
 
     @Override
     public void applyStrategy(long id) {
@@ -45,8 +45,8 @@ public class StartBotStrategy extends RestBotStrategy {
             try {
                 sendFailureMessage(id);
                 ErrorDto error = mapper.readValue(response.body(), ErrorDto.class);
-                log.error(String.format("Failed to register chat with id %d with description %s",
-                    id, error.description()));
+                log.error(String.format(
+                        "Failed to register chat with id %d with description %s", id, error.description()));
             } catch (JsonProcessingException e) {
                 handleJsonProcessingException(id, e);
             }

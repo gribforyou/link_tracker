@@ -11,9 +11,9 @@ public class TrackBotStrategy implements BotStrategy {
 
     @Override
     public void applyStrategy(long id) {
-        //todo
-        //getLink()
-        //send Post /links
+        // todo
+        // getLink()
+        // send Post /links
     }
 
     @Override

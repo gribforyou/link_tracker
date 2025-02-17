@@ -11,12 +11,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @AllArgsConstructor
 public abstract class RestBotStrategy implements BotStrategy {
-    private final static String FAILURE_MESSAGE = "Something went wrong... Try again later!";
+    private static final String FAILURE_MESSAGE = "Something went wrong... Try again later!";
 
     protected final TelegramBot bot;
     protected final ObjectMapper mapper;
     protected final ScrapperClient scrapperClient;
-
 
     protected void sendFailureMessage(long id) {
         bot.execute(new SendMessage(id, FAILURE_MESSAGE));

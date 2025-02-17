@@ -1,13 +1,14 @@
 package backend.academy.bot.scrapper.communication;
 
+import backend.academy.LinkDto;
+import backend.academy.RemoveLinkDto;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import backend.academy.RemoveLinkDto;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -39,12 +40,43 @@ public class ScrapperClient {
         }
     }
 
-    public HttpResponse<String> getLinks(long chatId) throws ScrapperConnectionFailedException {
-        final String uri = String.format(baseUrl + "/links?Tg-Chat-Id=%d", chatId);
+    public HttpResponse<String> deleteChat(long id) throws ScrapperConnectionFailedException {
+        final String uri = String.format(baseUrl + "/tg-chat/%d", id);
 
         HttpRequest request = HttpRequest.newBuilder()
             .uri(URI.create(uri))
-            .GET()
+            .DELETE()
+            .build();
+
+        try {
+            return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException | InterruptedException e) {
+            throw new ScrapperConnectionFailedException(e.getMessage());
+        }
+    }
+
+    public HttpResponse<String> getLinks(long chatId) throws ScrapperConnectionFailedException {
+        final String uri = String.format(baseUrl + "/links?Tg-Chat-Id=%d", chatId);
+
+        HttpRequest request =
+            HttpRequest.newBuilder().uri(URI.create(uri)).GET().build();
+
+        try {
+            return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException | InterruptedException e) {
+            throw new ScrapperConnectionFailedException(e.getMessage());
+        }
+    }
+
+    public HttpResponse<String> addLink(long chatId, LinkDto linkDto) throws ScrapperConnectionFailedException, JsonProcessingException {
+        final String uri = String.format(baseUrl + "/links?Tg-Chat-Id=%d", chatId);
+
+        final String json = mapper.writeValueAsString(linkDto);
+
+        HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create(uri))
+            .header("Content-Type", "application/json")
+            .POST(HttpRequest.BodyPublishers.ofString(json))
             .build();
 
         try {
@@ -59,7 +91,7 @@ public class ScrapperClient {
 
         final String uri = String.format(baseUrl + "/links?Tg-Chat-Id=%d", chatId);
 
-        String json = mapper.writeValueAsString(removeLinkDto);
+        final String json = mapper.writeValueAsString(removeLinkDto);
 
         HttpRequest request = HttpRequest.newBuilder()
             .uri(URI.create(uri))

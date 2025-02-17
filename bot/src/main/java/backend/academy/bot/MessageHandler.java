@@ -1,25 +1,21 @@
 package backend.academy.bot;
 
 import backend.academy.bot.strategies.BotStrategy;
-import backend.academy.bot.strategies.DefaultBotStrategy;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
-import com.pengrad.telegrambot.request.SendMessage;
 import jakarta.annotation.PostConstruct;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
-import java.util.List;
 
 @Component
 public class MessageHandler {
     private final TelegramBot bot;
     private final List<BotStrategy> strategies;
 
-    public MessageHandler(TelegramBot bot, @Qualifier("sortedStrategies")List<BotStrategy> strategies) {
+    public MessageHandler(TelegramBot bot, @Qualifier("sortedStrategies") List<BotStrategy> strategies) {
         this.bot = bot;
         this.strategies = strategies;
     }
@@ -33,8 +29,8 @@ public class MessageHandler {
                     Message message = update.message();
                     String messageText = message.text();
                     Long id = message.chat().id();
-                    for(BotStrategy strategy : strategies) {
-                        if(strategy.supports(messageText)) {
+                    for (BotStrategy strategy : strategies) {
+                        if (strategy.supports(messageText)) {
                             strategy.applyStrategy(id);
                             break;
                         }
@@ -44,5 +40,4 @@ public class MessageHandler {
             }
         });
     }
-
 }
