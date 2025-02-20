@@ -1,7 +1,9 @@
 package backend.academy.bot.strategies;
 
-public interface BotStrategy {
-    void applyStrategy(long id);
+import backend.academy.bot.app.ChatState;
 
-    boolean supports(String message);
+public interface BotStrategy {
+    void applyStrategy(long id, String message);
+
+    boolean supports(String message, ChatState state);
 }

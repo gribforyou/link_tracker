@@ -1,4 +1,4 @@
-package backend.academy.bot.scrapper.communication;
+package backend.academy.bot.com.scrapper;
 
 public class ScrapperConnectionFailedException extends Exception {
     public ScrapperConnectionFailedException(String message) {

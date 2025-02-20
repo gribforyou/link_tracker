@@ -1,4 +1,4 @@
-package backend.academy.bot.scrapper.communication;
+package backend.academy.bot.com.scrapper;
 
 import backend.academy.LinkDto;
 import backend.academy.RemoveLinkDto;

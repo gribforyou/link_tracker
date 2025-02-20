@@ -1,8 +1,10 @@
 package backend.academy.bot.strategies;
 
 import backend.academy.ErrorDto;
-import backend.academy.bot.scrapper.communication.ScrapperClient;
-import backend.academy.bot.scrapper.communication.ScrapperConnectionFailedException;
+import backend.academy.bot.app.ChatState;
+import backend.academy.bot.app.StateOwner;
+import backend.academy.bot.com.scrapper.ScrapperClient;
+import backend.academy.bot.com.scrapper.ScrapperConnectionFailedException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pengrad.telegrambot.TelegramBot;
@@ -15,19 +17,23 @@ import org.springframework.stereotype.Component;
 @Component
 public class StartBotStrategy extends RestBotStrategy {
     private static final String COMMAND = "/start";
-
+    private static final ChatState TARGET_STATE = ChatState.NONE;
     private static final String SUCCESS_MESSAGE =
             """
             This chat is successfully registered!
             Use /help to see the list of available commands!
             """;
 
-    public StartBotStrategy(TelegramBot bot, ObjectMapper mapper, ScrapperClient scrapperClient) {
+    private final StateOwner stateOwner;
+
+    public StartBotStrategy(TelegramBot bot, ObjectMapper mapper,
+                            ScrapperClient scrapperClient, StateOwner stateOwner) {
         super(bot, mapper, scrapperClient);
+        this.stateOwner = stateOwner;
     }
 
     @Override
-    public void applyStrategy(long id) {
+    public void applyStrategy(long id, String message) {
         HttpResponse<String> response = null;
 
         try {
@@ -39,6 +45,7 @@ public class StartBotStrategy extends RestBotStrategy {
         }
 
         if (response.statusCode() == 200) {
+            stateOwner.putState(id, ChatState.READY);
             bot.execute(new SendMessage(id, SUCCESS_MESSAGE));
             final String report = String.format("Successfully registered chat with id %d", id);
             log.info(report);
@@ -56,7 +63,7 @@ public class StartBotStrategy extends RestBotStrategy {
     }
 
     @Override
-    public boolean supports(String message) {
-        return COMMAND.equals(message);
+    public boolean supports(String message, ChatState state) {
+        return COMMAND.equals(message) && TARGET_STATE.equals(state);
     }
 }

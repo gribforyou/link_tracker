@@ -9,23 +9,23 @@ import org.springframework.stereotype.Component;
 
 @Component
 @AllArgsConstructor
-public class TrackBotStrategy implements BotStrategy {
-    private final static ChatState TARGET_STATE = ChatState.READY;
-    private final static ChatState RESULT_STATE = ChatState.WAITING_TRACKED_LINK;
-    private final static String COMMAND = "/track";
-    private final static String INSTRUCTION_MESSAGE = "Input link you want to track";
+public class TrackLinkBotStrategy implements BotStrategy {
+    private final static ChatState TARGET_STATE = ChatState.WAITING_TRACKED_LINK;
+    private final static ChatState RESULT_STATE = ChatState.WAITING_TEG;
+    private final static String INSTRUCTION_MESSAGE = "Input tags for this link or uso command /scip";
 
     private final StateOwner stateOwner;
     private final TelegramBot bot;
 
     @Override
     public void applyStrategy(long id, String message) {
-        stateOwner.putState(id, RESULT_STATE);
+        stateOwner.putState(id, TARGET_STATE);
+        stateOwner.putSavedLink(id, message);
         bot.execute(new SendMessage(id, INSTRUCTION_MESSAGE));
     }
 
     @Override
     public boolean supports(String message, ChatState state) {
-        return COMMAND.equals(message) && TARGET_STATE.equals(state);
+        return TARGET_STATE.equals(state);
     }
 }

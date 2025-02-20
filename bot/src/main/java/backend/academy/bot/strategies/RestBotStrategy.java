@@ -1,6 +1,6 @@
 package backend.academy.bot.strategies;
 
-import backend.academy.bot.scrapper.communication.ScrapperClient;
+import backend.academy.bot.com.scrapper.ScrapperClient;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pengrad.telegrambot.TelegramBot;

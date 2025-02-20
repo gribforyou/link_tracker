@@ -1,4 +1,4 @@
-package backend.academy.bot.scrapper.communication;
+package backend.academy.bot.com.scrapper;
 
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;

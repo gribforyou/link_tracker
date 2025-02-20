@@ -1,4 +1,4 @@
-package backend.academy.bot;
+package backend.academy.bot.app;
 
 import backend.academy.bot.strategies.BotStrategy;
 import com.pengrad.telegrambot.TelegramBot;
@@ -14,10 +14,13 @@ import org.springframework.stereotype.Component;
 public class MessageHandler {
     private final TelegramBot bot;
     private final List<BotStrategy> strategies;
+    private final StateOwner stateOwner;
 
-    public MessageHandler(TelegramBot bot, @Qualifier("sortedStrategies") List<BotStrategy> strategies) {
+    public MessageHandler(TelegramBot bot, @Qualifier("sortedStrategies") List<BotStrategy> strategies,
+                          StateOwner stateOwner) {
         this.bot = bot;
         this.strategies = strategies;
+        this.stateOwner = stateOwner;
     }
 
     @PostConstruct
@@ -29,15 +32,21 @@ public class MessageHandler {
                     Message message = update.message();
                     String messageText = message.text();
                     Long id = message.chat().id();
-                    for (BotStrategy strategy : strategies) {
-                        if (strategy.supports(messageText)) {
-                            strategy.applyStrategy(id);
-                            break;
-                        }
-                    }
+                    ChatState state = stateOwner.getState(id);
+                    BotStrategy validStrategy = chooseStrategy(messageText, state);
+                    validStrategy.applyStrategy(id, messageText);
                 }
                 return CONFIRMED_UPDATES_ALL;
             }
         });
+    }
+
+    private BotStrategy chooseStrategy(String messageText, ChatState state) {
+        for (BotStrategy strategy : strategies) {
+            if (strategy.supports(messageText, state)) {
+                return strategy;
+            }
+        }
+        return null;
     }
 }
