@@ -29,11 +29,10 @@ public class BotServer {
             ErrorDto dto = parseException(e, description, null);
             String json = writeObjectToJson(dto);
             return ResponseEntity.badRequest()
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(json);
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(json);
         }
     }
-
 
     private ErrorDto parseException(final Exception e, String description, String code) {
         String exceptionName = e.getClass().getSimpleName();
@@ -43,9 +42,7 @@ public class BotServer {
     }
 
     private String[] parseStackTrace(StackTraceElement[] stackTrace) {
-        return Arrays.stream(stackTrace)
-            .map(StackTraceElement::toString)
-            .toArray(String[]::new);
+        return Arrays.stream(stackTrace).map(StackTraceElement::toString).toArray(String[]::new);
     }
 
     private String writeObjectToJson(final Object object) throws JsonProcessingException {

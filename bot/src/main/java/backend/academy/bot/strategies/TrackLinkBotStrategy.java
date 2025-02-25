@@ -10,9 +10,9 @@ import org.springframework.stereotype.Component;
 @Component
 @AllArgsConstructor
 public class TrackLinkBotStrategy implements BotStrategy {
-    private final static ChatState TARGET_STATE = ChatState.WAITING_TRACKED_LINK;
-    private final static ChatState RESULT_STATE = ChatState.WAITING_TEG;
-    private final static String INSTRUCTION_MESSAGE = "Input tags for this link or uso command /scip";
+    private static final ChatState TARGET_STATE = ChatState.WAITING_TRACKED_LINK;
+    private static final ChatState RESULT_STATE = ChatState.WAITING_TEG;
+    private static final String INSTRUCTION_MESSAGE = "Input tags for this link or uso command /scip";
 
     private final StateOwner stateOwner;
     private final TelegramBot bot;

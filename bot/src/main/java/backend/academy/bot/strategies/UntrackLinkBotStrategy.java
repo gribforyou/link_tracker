@@ -16,18 +16,18 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class UntrackLinkBotStrategy extends RestBotStrategy {
-    private final static ChatState TARGET_STATE = ChatState.WAITING_UNTRACKED_LINK;
-    private final static ChatState RESULT_STATE = ChatState.READY;
-    private final static String SUCCESS_MESSAGE = "Link is successfully untracked";
-    private final static String UNKNOWN_LINK_MESSAGE = "This link was not found in tracked";
+    private static final ChatState TARGET_STATE = ChatState.WAITING_UNTRACKED_LINK;
+    private static final ChatState RESULT_STATE = ChatState.READY;
+    private static final String SUCCESS_MESSAGE = "Link is successfully untracked";
+    private static final String UNKNOWN_LINK_MESSAGE = "This link was not found in tracked";
 
     private final StateOwner stateOwner;
 
-    public UntrackLinkBotStrategy(TelegramBot bot, ObjectMapper mapper, ScrapperClient scrapperClient, StateOwner stateOwner) {
+    public UntrackLinkBotStrategy(
+            TelegramBot bot, ObjectMapper mapper, ScrapperClient scrapperClient, StateOwner stateOwner) {
         super(bot, mapper, scrapperClient);
         this.stateOwner = stateOwner;
     }
-
 
     @Override
     public void applyStrategy(long id, String message) {

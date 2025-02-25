@@ -12,7 +12,7 @@ public class HelpBotStrategy implements BotStrategy {
     private static final ChatState TARGET_STATE = ChatState.READY;
     private static final String COMMAND = "/help";
     private static final String HELP_MESSAGE =
-        """
+            """
             To communicate with bot use following commands:
             \t/track - for adding link to tracked
             \t/untrack - for removing link from tracked
