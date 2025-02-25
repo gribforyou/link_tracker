@@ -19,7 +19,7 @@ public class TrackLinkBotStrategy implements BotStrategy {
 
     @Override
     public void applyStrategy(long id, String message) {
-        stateOwner.putState(id, TARGET_STATE);
+        stateOwner.putState(id, RESULT_STATE);
         stateOwner.putSavedLink(id, message);
         bot.execute(new SendMessage(id, INSTRUCTION_MESSAGE));
     }

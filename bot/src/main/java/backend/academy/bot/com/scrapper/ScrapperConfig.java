@@ -12,6 +12,6 @@ public class ScrapperConfig {
     @Value("${scrapper.host}")
     private String scrapperHost;
 
-    @Value("${scrapper.port}")
+    @Value("8081")
     private int scrapperPort;
 }
