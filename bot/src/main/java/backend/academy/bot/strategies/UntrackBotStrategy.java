@@ -10,10 +10,10 @@ import org.springframework.stereotype.Component;
 @Component
 @AllArgsConstructor
 public class UntrackBotStrategy implements BotStrategy {
-    private final static String COMMAND = "/untrack";
-    private final static String INSTRUCTION_MESSAGE = "Input link you want to untrack";
-    private final static ChatState TARGET_STATE = ChatState.READY;
-    private final static ChatState RESULT_STATE = ChatState.WAITING_UNTRACKED_LINK;
+    private static final String COMMAND = "/untrack";
+    private static final String INSTRUCTION_MESSAGE = "Input link you want to untrack";
+    private static final ChatState TARGET_STATE = ChatState.READY;
+    private static final ChatState RESULT_STATE = ChatState.WAITING_UNTRACKED_LINK;
 
     private final StateOwner stateOwner;
     private final TelegramBot telegramBot;

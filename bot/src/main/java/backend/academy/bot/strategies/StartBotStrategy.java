@@ -26,8 +26,8 @@ public class StartBotStrategy extends RestBotStrategy {
 
     private final StateOwner stateOwner;
 
-    public StartBotStrategy(TelegramBot bot, ObjectMapper mapper,
-                            ScrapperClient scrapperClient, StateOwner stateOwner) {
+    public StartBotStrategy(
+            TelegramBot bot, ObjectMapper mapper, ScrapperClient scrapperClient, StateOwner stateOwner) {
         super(bot, mapper, scrapperClient);
         this.stateOwner = stateOwner;
     }
@@ -47,15 +47,12 @@ public class StartBotStrategy extends RestBotStrategy {
         if (response.statusCode() == 200) {
             stateOwner.putState(id, ChatState.READY);
             bot.execute(new SendMessage(id, SUCCESS_MESSAGE));
-            final String report = String.format("Successfully registered chat with id %d", id);
-            log.info(report);
+            log.info("Successfully registered chat with id {}}", id);
         } else {
             try {
                 sendFailureMessage(id);
                 ErrorDto error = mapper.readValue(response.body(), ErrorDto.class);
-                final String report = String.format(
-                        "Failed to register chat with id %d with description %s", id, error.description());
-                log.error(report);
+                log.error("Failed to register chat with id {}: {}", id, error);
             } catch (JsonProcessingException e) {
                 handleJsonProcessingException(id, e);
             }

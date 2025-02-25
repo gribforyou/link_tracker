@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 public class DefaultBotStrategy implements BotStrategy {
     private final TelegramBot bot;
     private static final String DEFAULT_MESSAGE =
-        """
+            """
             Unknown command or command not supported in current state.
             Please, use /help command for listing commands
             """;

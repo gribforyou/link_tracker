@@ -14,15 +14,15 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class TrackFilterBotStrategy extends RestBotStrategy {
-    private final static ChatState TARGET_STATE = ChatState.WAITING_FILTER;
-    private final static ChatState RESULT_STATE = ChatState.READY;
-    private final static String WRONG_REQUEST_MESSAGE = "Some data is invalid. Try again";
-    private final static String SUCCESS_MESSAGE = "Link untracked successfully";
+    private static final ChatState TARGET_STATE = ChatState.WAITING_FILTER;
+    private static final ChatState RESULT_STATE = ChatState.READY;
+    private static final String WRONG_REQUEST_MESSAGE = "Some data is invalid. Try again";
+    private static final String SUCCESS_MESSAGE = "Link untracked successfully";
 
     private final StateOwner stateOwner;
 
-    public TrackFilterBotStrategy(TelegramBot bot, ObjectMapper mapper,
-                                  ScrapperClient scrapperClient, StateOwner stateOwner) {
+    public TrackFilterBotStrategy(
+            TelegramBot bot, ObjectMapper mapper, ScrapperClient scrapperClient, StateOwner stateOwner) {
         super(bot, mapper, scrapperClient);
         this.stateOwner = stateOwner;
     }

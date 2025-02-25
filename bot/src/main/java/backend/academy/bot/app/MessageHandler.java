@@ -16,8 +16,8 @@ public class MessageHandler {
     private final List<BotStrategy> strategies;
     private final StateOwner stateOwner;
 
-    public MessageHandler(TelegramBot bot, @Qualifier("sortedStrategies") List<BotStrategy> strategies,
-                          StateOwner stateOwner) {
+    public MessageHandler(
+            TelegramBot bot, @Qualifier("sortedStrategies") List<BotStrategy> strategies, StateOwner stateOwner) {
         this.bot = bot;
         this.strategies = strategies;
         this.stateOwner = stateOwner;

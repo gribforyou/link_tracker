@@ -1,11 +1,10 @@
 package backend.academy.scrapper.repository;
 
-import org.springframework.stereotype.Component;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.springframework.stereotype.Component;
 
 @Component
 public class RepositoryOwner {
@@ -17,19 +16,18 @@ public class RepositoryOwner {
         this.links = new HashMap<>();
     }
 
-    public void addChatId(int id){
+    public void addChatId(int id) {
         this.chatIds.add(id);
     }
 
-    public void addLink(int id, String link){
-        if(!chatIds.contains(id)){
+    public void addLink(int id, String link) {
+        if (!chatIds.contains(id)) {
             throw new IllegalArgumentException("Unknown chat id");
         }
 
-        if(!links.containsKey(link)){
+        if (!links.containsKey(link)) {
             links.put(link, new HashSet<>(id));
-        }
-        else{
+        } else {
             links.get(link).add(id);
         }
     }
