@@ -4,13 +4,16 @@ import backend.academy.ErrorDto;
 import backend.academy.scrapper.repository.RepositoryOwner;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.Arrays;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Arrays;
 
 @AllArgsConstructor
 @RestController
@@ -18,11 +21,16 @@ public class BotServer {
     private final RepositoryOwner repositoryOwner;
     private final ObjectMapper objectMapper;
 
-    @PostMapping("/tg-chat/{id}")
-    ResponseEntity<String> registerChat(@PathVariable String id) throws JsonProcessingException {
+    @RequestMapping(value = "/tg-chat/{id}",
+            method = {RequestMethod.DELETE, RequestMethod.POST})
+    ResponseEntity<String> registerChat(@PathVariable String id, HttpServletRequest request) throws JsonProcessingException {
         try {
-            final int chatId = Integer.parseInt(id);
-            repositoryOwner.addChatId(chatId);
+            final long chatId = Integer.parseInt(id);
+            if (request.getMethod().equals("POST")) {
+                repositoryOwner.addChat(chatId);
+            } else if (request.getMethod().equals("DELETE")) {
+                repositoryOwner.removeChat(chatId);
+            }
             return ResponseEntity.ok().build();
         } catch (NumberFormatException e) {
             final String description = "Wrong id";
