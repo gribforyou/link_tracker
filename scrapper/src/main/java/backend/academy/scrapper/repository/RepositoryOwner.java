@@ -3,16 +3,20 @@ package backend.academy.scrapper.repository;
 import backend.academy.LinkDto;
 import backend.academy.LinksDto;
 import backend.academy.RemoveLinkDto;
-import org.springframework.stereotype.Component;
-
+import backend.academy.SavedLinkDto;
+import backend.academy.scrapper.server.exceptions.ChatNotFoundException;
+import backend.academy.scrapper.server.exceptions.UserLinkNotFoundException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
+import org.springframework.stereotype.Component;
 
 @Component
 public class RepositoryOwner {
-    private final Map<Long, Set<LinkDto>> data;
+    private final static long MOCK_ID = 1;
+    private final Map<Long, Set<SavedLinkDto>> data;
 
     public RepositoryOwner() {
         this.data = new HashMap<>();
@@ -25,30 +29,45 @@ public class RepositoryOwner {
     }
 
     public void removeChat(long id) {
+        if (!data.containsKey(id)) {
+            throw new ChatNotFoundException(id);
+        }
         data.remove(id);
     }
 
-    public void addLink(long id, LinkDto link) {
+    public SavedLinkDto saveLink(long id, LinkDto link) throws ChatNotFoundException {
         if (!data.containsKey(id)) {
-            throw new IllegalArgumentException("Unknown id");
+            throw new ChatNotFoundException(id);
         }
-        data.get(id).add(link);
+
+        SavedLinkDto savedLink = SavedLinkDto.of(MOCK_ID, link);
+        data.get(id).add(savedLink);
+        return savedLink;
     }
 
     public LinksDto getLinks(long id) {
-        Set<LinkDto> links = data.get(id);
+        Set<SavedLinkDto> links = data.get(id);
         if (links == null) {
-            throw new IllegalArgumentException("Unknown id");
+            throw new ChatNotFoundException(id);
         }
-        LinkDto[] array = links.toArray(LinkDto[]::new);
+        SavedLinkDto[] array = links.toArray(SavedLinkDto[]::new);
         int length = array.length;
         return new LinksDto(length, array);
     }
 
-    public void removeLink(long id, RemoveLinkDto link) {
+    public SavedLinkDto removeLink(long id, RemoveLinkDto removed) {
         if (!data.containsKey(id)) {
-            throw new IllegalArgumentException("Unknown id");
+            throw new ChatNotFoundException(id);
         }
-        data.get(id).removeIf(l -> l.url().equals(link.link()));
+        Optional<SavedLinkDto> first = data.get(id).stream()
+            .filter(l -> l.link().equals(removed.link()))
+            .findFirst();
+
+        if (first.isEmpty()) {
+            throw new UserLinkNotFoundException(removed.link());
+        }
+
+        data.get(id).remove(first.get());
+        return first.get();
     }
 }

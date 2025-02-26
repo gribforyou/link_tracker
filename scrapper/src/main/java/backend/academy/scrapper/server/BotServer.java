@@ -1,59 +1,46 @@
 package backend.academy.scrapper.server;
 
-import backend.academy.ErrorDto;
+import backend.academy.LinkDto;
+import backend.academy.LinksDto;
+import backend.academy.RemoveLinkDto;
+import backend.academy.SavedLinkDto;
 import backend.academy.scrapper.repository.RepositoryOwner;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Arrays;
-
-@AllArgsConstructor
 @RestController
+@AllArgsConstructor
 public class BotServer {
     private final RepositoryOwner repositoryOwner;
-    private final ObjectMapper objectMapper;
 
-    @RequestMapping(value = "/tg-chat/{id}",
-            method = {RequestMethod.DELETE, RequestMethod.POST})
-    ResponseEntity<String> registerChat(@PathVariable String id, HttpServletRequest request) throws JsonProcessingException {
-        try {
-            final long chatId = Integer.parseInt(id);
-            if (request.getMethod().equals("POST")) {
-                repositoryOwner.addChat(chatId);
-            } else if (request.getMethod().equals("DELETE")) {
-                repositoryOwner.removeChat(chatId);
-            }
-            return ResponseEntity.ok().build();
-        } catch (NumberFormatException e) {
-            final String description = "Wrong id";
-            ErrorDto dto = parseException(e, description, null);
-            String json = writeObjectToJson(dto);
-            return ResponseEntity.badRequest()
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(json);
-        }
+    @PostMapping("/tg-chat/{id}")
+    void registerChat(@PathVariable long id) {
+        repositoryOwner.addChat(id);
     }
 
-    private ErrorDto parseException(final Exception e, String description, String code) {
-        String exceptionName = e.getClass().getSimpleName();
-        String exceptionMessage = e.getMessage();
-        String[] stackTrace = parseStackTrace(e.getStackTrace());
-        return new ErrorDto(description, code, exceptionName, exceptionMessage, stackTrace);
+    @DeleteMapping("/tg-chat/{id}")
+    void removeChat(@PathVariable long id) {
+        repositoryOwner.removeChat(id);
     }
 
-    private String[] parseStackTrace(StackTraceElement[] stackTrace) {
-        return Arrays.stream(stackTrace).map(StackTraceElement::toString).toArray(String[]::new);
+    @PostMapping("/links")
+    SavedLinkDto addLink(@RequestParam long id, @RequestBody LinkDto linkDto) {
+        return repositoryOwner.saveLink(id, linkDto);
     }
 
-    private String writeObjectToJson(final Object object) throws JsonProcessingException {
-        return objectMapper.writeValueAsString(object);
+    @GetMapping("/links")
+    LinksDto getLinks(@RequestParam long id) {
+        return repositoryOwner.getLinks(id);
+    }
+
+    @DeleteMapping("/links")
+    SavedLinkDto removeLink(@RequestParam long id, @RequestBody RemoveLinkDto removeLink) {
+        return repositoryOwner.removeLink(id, removeLink);
     }
 }
