@@ -1,3 +1,3 @@
 package backend.academy;
 
-public record LinkDto(long id, String url, String[] tags, String[] filters) {}
+public record LinkDto(String link, String[] tags, String[] filters) {}

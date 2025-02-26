@@ -31,7 +31,7 @@ public class TrackFilterBotStrategy extends RestBotStrategy {
     public void applyStrategy(long id, String message) {
         String link = stateOwner.getSavedLink(id);
         String tag = stateOwner.getSavedTag(id);
-        LinkDto dto = new LinkDto(id, link, tag.split(" "), message.split(" "));
+        LinkDto dto = new LinkDto(link, tag.split(" "), message.split(" "));
 
         HttpResponse<String> response = null;
         try {
