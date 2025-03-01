@@ -2,21 +2,23 @@ package backend.academy.scrapper.clients;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.SneakyThrows;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 
-public interface LinkClient {
-    ObjectMapper mapper = null;
+@AllArgsConstructor
+public abstract class LinkClient {
+    private final ObjectMapper mapper;
 
-    String getLastUpdateTime(String link);
+    public abstract String getLastUpdateTime(String link);
 
-    boolean supports(String link);
+    public abstract boolean supports(String link);
 
     @SneakyThrows
-    default String sendGetRequest(String link) {
+    protected String sendGetRequest(String link) {
         try (HttpClient httpClient = HttpClient.newHttpClient()) {
             HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(link))
@@ -29,7 +31,7 @@ public interface LinkClient {
     }
 
     @SneakyThrows
-    default String getJsonField(String json, String fieldName) {
+    protected String getJsonField(String json, String fieldName) {
         JsonNode jsonNode = mapper.readTree(json);
         return jsonNode.get(fieldName).asText();
     }

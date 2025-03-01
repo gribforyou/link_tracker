@@ -2,16 +2,17 @@ package backend.academy.scrapper.clients;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.regex.Pattern;
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
-@AllArgsConstructor
-public class GithubRepoClient implements LinkClient {
+public class GithubRepoClient extends LinkClient {
     private static final String GITHUB_REPO_URL_REGEX = "(https?://)?github\\.com/\\w+/[\\w-]+/?";
     private static final String API_URL_TEMPLATE = "https://api.github.com/repos/%s/%s";
     private static final String FIELD_NAME = "updated_at";
-    private final ObjectMapper mapper = new ObjectMapper();
+
+    public GithubRepoClient(ObjectMapper mapper) {
+        super(mapper);
+    }
 
     @Override
     public String getLastUpdateTime(String link) {

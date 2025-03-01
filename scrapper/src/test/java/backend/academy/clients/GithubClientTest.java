@@ -2,6 +2,7 @@ package backend.academy.clients;
 
 import backend.academy.scrapper.clients.GithubRepoClient;
 import java.lang.reflect.Method;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,7 +15,7 @@ public class GithubClientTest {
 
     @BeforeEach
     public void setUp() {
-        githubRepoClient = new GithubRepoClient();
+        githubRepoClient = new GithubRepoClient(new ObjectMapper());
     }
 
     @ParameterizedTest
