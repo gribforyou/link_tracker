@@ -27,10 +27,10 @@ public class StackClientTest {
         "stackoverflow.com/questions/123/blalba bla, false"
     })
     public void testSupportMethod(String link, boolean expected) {
-        //When
+        // When
         boolean result = client.supports(link);
 
-        //Then
+        // Then
         Assertions.assertEquals(expected, result);
     }
 
@@ -41,15 +41,14 @@ public class StackClientTest {
         "https://stackoverflow.com/questions/123/blabla, https://api.stackexchange.com/2.3/questions/123?site=stackoverflow",
     })
     public void testApiUrl(String link, String expected) {
-        //Given
-        Method getApiUrl = client.getClass()
-            .getDeclaredMethod("getApiUrl", String.class);
+        // Given
+        Method getApiUrl = client.getClass().getDeclaredMethod("getApiUrl", String.class);
         getApiUrl.setAccessible(true);
 
-        //When
+        // When
         String result = (String) getApiUrl.invoke(client, link);
 
-        //Then
+        // Then
         Assertions.assertEquals(expected, result);
     }
 }

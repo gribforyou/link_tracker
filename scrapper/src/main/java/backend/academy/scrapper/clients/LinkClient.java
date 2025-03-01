@@ -20,10 +20,8 @@ public abstract class LinkClient {
     @SneakyThrows
     protected String sendGetRequest(String link) {
         try (HttpClient httpClient = HttpClient.newHttpClient()) {
-            HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(link))
-                .GET()
-                .build();
+            HttpRequest request =
+                    HttpRequest.newBuilder().uri(URI.create(link)).GET().build();
 
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             return response.body();

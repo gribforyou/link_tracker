@@ -27,10 +27,10 @@ public class GithubClientTest {
         "github.com/user/user repo, false"
     })
     public void testSupportMethod(String link, boolean expected) {
-        //When
+        // When
         boolean result = client.supports(link);
 
-        //Then
+        // Then
         Assertions.assertEquals(expected, result);
     }
 
@@ -42,15 +42,14 @@ public class GithubClientTest {
         "http://github.com/user/rep/, https://api.github.com/repos/user/rep"
     })
     public void testApiUrl(String link, String expected) {
-        //Given
-        Method getApiUrl = client.getClass()
-            .getDeclaredMethod("getApiUrl", String.class);
+        // Given
+        Method getApiUrl = client.getClass().getDeclaredMethod("getApiUrl", String.class);
         getApiUrl.setAccessible(true);
 
-        //When
+        // When
         String result = (String) getApiUrl.invoke(client, link);
 
-        //Then
+        // Then
         Assertions.assertEquals(expected, result);
     }
 }
