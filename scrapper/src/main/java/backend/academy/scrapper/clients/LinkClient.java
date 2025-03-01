@@ -31,8 +31,14 @@ public abstract class LinkClient {
     }
 
     @SneakyThrows
-    protected String getJsonField(String json, String fieldName) {
+    protected String getJsonField(String json, String... strings) {
         JsonNode jsonNode = mapper.readTree(json);
-        return jsonNode.get(fieldName).asText();
+        for (String string : strings) {
+            while (jsonNode.isArray()) {
+                jsonNode = jsonNode.get(0);
+            }
+            jsonNode = jsonNode.get(string);
+        }
+        return jsonNode.asText();
     }
 }

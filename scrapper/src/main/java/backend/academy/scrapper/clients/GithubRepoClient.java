@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class GithubRepoClient extends LinkClient {
     private static final String GITHUB_REPO_URL_REGEX = "(https?://)?github\\.com/\\w+/[\\w-]+/?";
-    private static final String API_URL_TEMPLATE = "https://api.github.com/repos/%s/%s";
+    private static final String GITHUB_API_URL_TEMPLATE = "https://api.github.com/repos/%s/%s";
     private static final String FIELD_NAME = "updated_at";
 
     public GithubRepoClient(ObjectMapper mapper) {
@@ -46,6 +46,6 @@ public class GithubRepoClient extends LinkClient {
         }
         String user = split[index + 1];
         String repo = split[index + 2];
-        return String.format(API_URL_TEMPLATE, user, repo);
+        return String.format(GITHUB_API_URL_TEMPLATE, user, repo);
     }
 }

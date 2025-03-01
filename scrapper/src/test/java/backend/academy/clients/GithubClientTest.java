@@ -1,12 +1,11 @@
 package backend.academy.clients;
 
 import backend.academy.scrapper.clients.GithubRepoClient;
-import java.lang.reflect.Method;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.lang.reflect.Method;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
@@ -52,16 +51,5 @@ public class GithubClientTest {
 
         //Then
         Assertions.assertEquals(expected, result);
-    }
-
-    @Test
-    public void testMainMethod() {
-        //Given
-        final String link = "https://github.com/gribforyou/Fractal-Flame";
-
-        //When
-        final String result = githubRepoClient.getLastUpdateTime(link);
-
-        System.out.println(result);
     }
 }
