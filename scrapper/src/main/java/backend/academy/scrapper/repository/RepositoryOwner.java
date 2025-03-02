@@ -66,9 +66,9 @@ public class RepositoryOwner {
             throw new ChatNotFoundException(id);
         }
         SavedLinkDto linkToRemove = data.get(id).stream()
-            .filter(l -> l.link().equals(removed.link()))
-            .findFirst()
-            .orElseThrow(() -> new UserLinkNotFoundException(removed.link()));
+                .filter(l -> l.link().equals(removed.link()))
+                .findFirst()
+                .orElseThrow(() -> new UserLinkNotFoundException(removed.link()));
 
         data.get(id).remove(linkToRemove);
         return linkToRemove;
@@ -90,8 +90,9 @@ public class RepositoryOwner {
 
     public List<PairLinkId> getPairs() {
         List<PairLinkId> pairs = new ArrayList<>();
-        for (var key : data.keySet()) {
-            Set<SavedLinkDto> links = data.get(key);
+        for (var entry : data.entrySet()) {
+            Set<SavedLinkDto> links = entry.getValue();
+            var key = entry.getKey();
             for (var link : links) {
                 pairs.add(new PairLinkId(link, key));
             }

@@ -25,15 +25,16 @@ public class UpdateSender {
 
         HttpClient httpClient = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create(TARGET_URL.formatted(config.botUrl, config.port)))
-            .header("Content-Type", "application/json")
-            .POST(HttpRequest.BodyPublishers.ofString(json))
-            .build();
+                .uri(URI.create(TARGET_URL.formatted(config.botUrl, config.port)))
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(json))
+                .build();
 
         var response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
         if (response.statusCode() == 400) {
-            String description = mapper.readTree(response.body()).get("description").asText();
-            log.error("Error sending update. Description: " + description);
+            String description =
+                    mapper.readTree(response.body()).get("description").asText();
+            log.error("Error sending update. Description: {}", description);
         }
     }
 }

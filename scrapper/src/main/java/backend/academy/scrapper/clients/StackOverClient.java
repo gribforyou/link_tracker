@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class StackOverClient extends LinkClient {
     private static final String STACK_QUESTION_URL_REGEX =
-            "(https?://)?stackoverflow\\.com/questions/[1-9]\\d*(/\\w*)?";
+            "(https?://)?stackoverflow\\.com/questions/[1-9]\\d*(/[\\w-]*)?";
     private static final String STACK_API_TEMPLATE =
             "https://api.stackexchange.com/2.3/questions/%s?site=stackoverflow";
     public static final String OUTER_FIELD_NAME = "items";

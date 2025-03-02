@@ -11,12 +11,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @AllArgsConstructor
 public class ScrapperListener {
+    private static final String UPDATE_MESSAGE = "%s\n\tfrom $s\n\ton $s";
+
     private TelegramBot bot;
 
     @PostMapping("/updates")
     public void sendUpdate(@RequestBody UpdateDto updateDto) {
-        for(var id : updateDto.chatIds()){
-            bot.execute(new SendMessage(id, updateDto.description()));
+        for (var id : updateDto.chatIds()) {
+            String message = UPDATE_MESSAGE.replace(updateDto.description(), updateDto.url());
+            bot.execute(new SendMessage(id, message));
         }
     }
 }
