@@ -24,7 +24,8 @@ public class StackClientTest {
         "http://stackoverflow.com/questions/123/, true",
         "https://stackoverflow.com/questions/123/blabla, true",
         "stackoverflow.com/questions/123, true",
-        "stackoverflow.com/questions/123/blalba bla, false"
+        "stackoverflow.com/questions/123/blalba bla, false",
+        "https://stackoverflow.com/questions/79479448/how-to-safely-inspect-flutter-dependency-tree, true"
     })
     public void testSupportMethod(String link, boolean expected) {
         // When

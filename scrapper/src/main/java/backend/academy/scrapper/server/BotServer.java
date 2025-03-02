@@ -30,17 +30,17 @@ public class BotServer {
     }
 
     @PostMapping("/links")
-    SavedLinkDto addLink(@RequestParam long id, @RequestBody LinkDto linkDto) {
+    SavedLinkDto addLink(@RequestParam("Tg-Chat-Id") long id, @RequestBody LinkDto linkDto) {
         return repositoryOwner.saveLink(id, linkDto);
     }
 
     @GetMapping("/links")
-    LinksDto getLinks(@RequestParam long id) {
+    LinksDto getLinks(@RequestParam("Tg-Chat-Id") long id) {
         return repositoryOwner.getLinks(id);
     }
 
     @DeleteMapping("/links")
-    SavedLinkDto removeLink(@RequestParam long id, @RequestBody RemoveLinkDto removeLink) {
+    SavedLinkDto removeLink(@RequestParam("Tg-Chat-Id") long id, @RequestBody RemoveLinkDto removeLink) {
         return repositoryOwner.removeLink(id, removeLink);
     }
 }

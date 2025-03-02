@@ -6,19 +6,26 @@ import backend.academy.RemoveLinkDto;
 import backend.academy.SavedLinkDto;
 import backend.academy.scrapper.server.exceptions.ChatNotFoundException;
 import backend.academy.scrapper.server.exceptions.UserLinkNotFoundException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import lombok.Getter;
 import org.springframework.stereotype.Component;
 
+@Getter
 @Component
 public class RepositoryOwner {
     private static final long MOCK_ID = 1;
+
     private final Map<Long, Set<SavedLinkDto>> data;
+    private final Map<String, String> updates;
 
     public RepositoryOwner() {
         this.data = new HashMap<>();
+        this.updates = new HashMap<>();
     }
 
     public void addChat(long id) {
@@ -65,5 +72,31 @@ public class RepositoryOwner {
 
         data.get(id).remove(linkToRemove);
         return linkToRemove;
+    }
+
+    public boolean isUpdated(String link, String update) {
+        String curUpdate = updates.getOrDefault(link, null);
+        if (curUpdate == null) {
+            updates.put(link, update);
+            return false;
+        }
+
+        if (!curUpdate.equals(update)) {
+            updates.put(link, update);
+            return true;
+        }
+        return false;
+    }
+
+    public List<PairLinkId> getPairs() {
+        List<PairLinkId> pairs = new ArrayList<>();
+        for (var entry : data.entrySet()) {
+            Set<SavedLinkDto> links = entry.getValue();
+            var key = entry.getKey();
+            for (var link : links) {
+                pairs.add(new PairLinkId(link, key));
+            }
+        }
+        return pairs;
     }
 }
